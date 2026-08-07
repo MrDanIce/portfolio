@@ -155,7 +155,7 @@ const STYLES = `
   .pf-logo {
     font-family: 'Space Grotesk', ui-sans-serif, sans-serif;
     font-weight: 700; font-size: 18px; letter-spacing: -0.5px;
-    color: #4D9EFF; user-select: none;
+    color: #4D9EFF; user-select: none; cursor: pointer;
   }
   .pf-nav ul { display: flex; gap: 32px; list-style: none; }
   .pf-nav-link {
@@ -374,7 +374,7 @@ function Nav({ active }) {
   const goto = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   return (
     <nav className="pf-nav">
-      <div className="pf-logo">MF.</div>
+      <div className="pf-logo" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>MF.</div>
       <ul>
         {["about", "experience", "projects", "skills", "contact"].map((id) => (
           <li key={id}>
