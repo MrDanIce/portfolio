@@ -138,8 +138,13 @@ function useParticleCanvas(ref) {
 /* ═══════════════════════════════════════════════ STYLES ══ */
 const STYLES = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: #060E1D; color: #DDE8FF; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
+  html { scroll-behavior: smooth; width: 100%; }
+  body {
+    background: #060E1D; color: #DDE8FF;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    width: 100%; min-height: 100%; overflow-x: hidden;
+  }
+  #root { width: 100%; min-height: 100svh; }
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: #060E1D; }
   ::-webkit-scrollbar-thumb { background: #1B2E50; border-radius: 99px; }
