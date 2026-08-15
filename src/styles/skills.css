@@ -1,0 +1,34 @@
+.skills-grid {
+  display: flex;
+  flex-direction: column;
+}
+.skill-group {
+  display: grid;
+  grid-template-columns: minmax(140px, 20%) 1fr;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border);
+}
+.skill-group:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.skill-cat {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-small);
+  color: var(--foreground);
+}
+.skill-tags {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+  .skill-group {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

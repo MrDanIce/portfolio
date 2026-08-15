@@ -4,7 +4,34 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-react-app</title>
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Mudassir Farooqui — Software & Data Engineer building enterprise data pipelines and applied ML/AI systems."
+    />
+    <title>Mudassir Farooqui — Software & Data Engineer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;500;600&family=Poiret+One&display=swap"
+    />
+
+    <script>
+      // Set the theme attribute before React mounts so there is no
+      // flash of the wrong theme. Defaults to dark per design; only a
+      // stored preference overrides that.
+      (function () {
+        try {
+          var stored = localStorage.getItem("pf-theme");
+          var theme = stored === "light" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

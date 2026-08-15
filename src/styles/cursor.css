@@ -1,0 +1,26 @@
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 500;
+  mix-blend-mode: difference;
+  transition: width var(--dur-fast) var(--ease-out), height var(--dur-fast) var(--ease-out);
+  will-change: transform;
+}
+.cursor-dot.is-active {
+  width: 34px;
+  height: 34px;
+  margin-left: -12px;
+  margin-top: -12px;
+}
+
+@media (max-width: 860px), (pointer: coarse) {
+  .cursor-dot {
+    display: none;
+  }
+}
