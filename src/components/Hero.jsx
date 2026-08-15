@@ -52,8 +52,8 @@ export function Hero() {
         <p className="hero-eyebrow">{eyebrow}</p>
 
         <h1 className="hero-name">
-          <span className="hero-name-line hero-name-line--right">{firstName}</span>
-          <span className="hero-name-line hero-name-line--left">{lastName}</span>
+          <span className="hero-name-line hero-name-line--left">{firstName}</span>
+          <span className="hero-name-line hero-name-line--right">{lastName}</span>
         </h1>
 
         <div className="hero-sub">
