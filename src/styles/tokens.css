@@ -1,0 +1,96 @@
+/* ══════════════════════════ DESIGN TOKENS ══════════════════════════
+   Warm editorial system: a cream/rust light palette with an intentional
+   dark counterpart (espresso/amber), and a display/body font pairing —
+   an art-deco geometric display face for oversized headings, a clean
+   geometric grotesk for everything else. Every size/color a component
+   uses should reference a token here, never a raw value. */
+
+:root {
+  /* ---- type ---- */
+  --font-display: "Poiret One", "Cormorant Garamond", ui-serif, serif;
+  --font-body: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  /* Hero name: ~195px at a 1440px viewport in the reference proportion
+     (≈13.5vw) — reproduced here as a clamp so the same ratio holds at
+     every width instead of a fixed px value. */
+  --fs-hero: clamp(3.25rem, 2rem + 10vw, 12.25rem);
+  /* CTA-scale heading (contact), one notch below the hero. */
+  --fs-cta: clamp(2.75rem, 1.5rem + 8vw, 9.75rem);
+  /* Statement/section display words. */
+  --fs-statement: clamp(2.5rem, 1rem + 5.6vw, 5.25rem);
+  --fs-h1: clamp(2.25rem, 1.2vw + 1.9rem, 3.5rem);
+  --fs-h2: clamp(1.5rem, 1vw + 1.2rem, 2.25rem);
+  --fs-h3: clamp(1.1rem, 0.4vw + 1rem, 1.4rem);
+  --fs-body-lg: clamp(1rem, 0.3vw + 0.9rem, 1.2rem);
+  --fs-body: 1rem;
+  --fs-small: 0.9rem;
+  --fs-meta: 0.8125rem;
+  --fs-label: 0.75rem;
+
+  --lh-tight: 0.94;
+  --lh-snug: 1.15;
+  --lh-body: 1.7;
+
+  --ls-tight: -0.01em;
+  --ls-snug: 0;
+  /* Reference nav/menu label spacing measured at ~2.08px on 13px type
+     (≈0.16em). */
+  --ls-label: 0.16em;
+
+  /* ---- spacing ---- */
+  /* Reference page margin measured at 40px on a 1440px viewport
+     (≈2.8vw); scaled down toward mobile rather than fixed. */
+  --gutter: clamp(1.25rem, 1vw + 1.5rem, 2.5rem);
+  --content-width: 1800px;
+
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1.25rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --space-7: 6vw;
+  --space-8: 9vw;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.2s;
+  --dur-med: 0.45s;
+  --dur-slow: 0.85s;
+
+  --radius-sm: 3px;
+  --radius-md: 8px;
+}
+
+/* Dark is the default — an intentional espresso/amber counterpart to
+   the reference's cream/rust light palette, not a straight invert. */
+:root,
+:root[data-theme="dark"] {
+  --background: #1c0f08;
+  --surface: #271409;
+  --foreground: #f5e8d8;
+  --muted: #b39377;
+  --muted-2: #7d6250;
+  --border: rgba(245, 232, 216, 0.12);
+  --border-strong: rgba(245, 232, 216, 0.22);
+  --accent: #e8823a;
+  --accent-ink: #1c0f08;
+  --focus-ring: #e8823a;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  /* Reference-measured: background rgb(255,242,224), heading/accent
+     color rgb(181,85,0). */
+  --background: #fff2e0;
+  --surface: #fbe8d3;
+  --foreground: #241207;
+  --muted: #7a6250;
+  --muted-2: #a48a71;
+  --border: rgba(36, 18, 7, 0.1);
+  --border-strong: rgba(36, 18, 7, 0.2);
+  --accent: #b55500;
+  --accent-ink: #fff2e0;
+  --focus-ring: #b55500;
+  color-scheme: light;
+}

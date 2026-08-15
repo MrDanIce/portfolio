@@ -1,0 +1,183 @@
+/* ══════════════════════════ GLOBAL BASE ══════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  transition: background-color var(--dur-med) var(--ease-out), color var(--dur-med) var(--ease-out);
+}
+
+/* Custom cursor replaces the native one on precise pointers only —
+   never on touch, and never when the user asked for less motion. */
+body.has-custom-cursor {
+  cursor: none;
+}
+body.has-custom-cursor a,
+body.has-custom-cursor button {
+  cursor: none;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Visible, on-brand focus ring for every interactive element —
+   never suppressed, only re-styled. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 99px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link — hidden until focused, first tab stop on the page. */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-3);
+  z-index: 1000;
+  padding: var(--space-2) var(--space-3);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-meta);
+  border-radius: var(--radius-sm);
+  transition: top var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus {
+  top: var(--space-3);
+}
+
+/* ---- shared editorial section scaffolding ---- */
+.section {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: var(--space-7) var(--gutter);
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+
+.section-heading {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  font-weight: 400;
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--space-4);
+}
+
+/* ---- CSS-driven scroll reveal (see useReveal hook) ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children: parent carries `.reveal`, children carry
+   `.reveal-item` with an inline `--i` index for the delay offset. */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+.reveal.is-visible .reveal-item {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

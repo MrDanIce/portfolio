@@ -1,0 +1,151 @@
+.project-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 34%) 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--border);
+}
+.project-row:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Reference-measured thumbnail proportion: ~1.77 (16:9), no radius —
+   a compact list treatment, not a large hero card. */
+.project-row-visual {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.project-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--surface);
+  overflow: hidden;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+.project-row:hover .project-visual {
+  transform: scale(1.015);
+}
+
+.project-visual-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 16%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+}
+.project-visual-sweep {
+  position: absolute;
+  inset: -20% -10%;
+  background: linear-gradient(115deg, transparent 40%, color-mix(in srgb, var(--accent) 22%, transparent) 50%, transparent 60%);
+}
+.project-visual-initial {
+  position: absolute;
+  right: -0.05em;
+  bottom: -0.18em;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 12vw, 7rem);
+  color: color-mix(in srgb, var(--accent) 65%, var(--foreground) 5%);
+  opacity: 0.6;
+  line-height: 1;
+}
+.project-visual-corner {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  width: 22px;
+  height: 22px;
+  border-top: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
+  opacity: 0.7;
+}
+
+.project-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.project-row-index {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-meta);
+  color: var(--muted-2);
+}
+.project-row-meta {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-meta);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.project-row-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.project-row-sub {
+  font-size: var(--fs-body-lg);
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+
+.project-row-bullets {
+  margin-bottom: var(--space-3);
+}
+.project-row-bullets li {
+  position: relative;
+  padding: 4px 0 4px 16px;
+  font-size: var(--fs-small);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.project-row-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 6px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.project-row-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-meta);
+  color: var(--muted-2);
+}
+.project-row-stack span:not(:last-child)::after {
+  content: "·";
+  margin-left: var(--space-3);
+  color: var(--muted-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-visual {
+    transition: none;
+  }
+}
+
+@media (max-width: 780px) {
+  .project-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}

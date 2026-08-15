@@ -1,0 +1,146 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: calc(var(--space-6) + 40px) var(--gutter) var(--space-5);
+}
+
+.hero-inner {
+  width: 100%;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+  opacity: 0;
+}
+
+/* Oversized two-line name, alternating alignment per line — the
+   reference's defining hero gesture, reproduced with original markup:
+   a flex column whose lines individually right- then left-align. */
+.hero-name {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-hero);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--accent);
+  margin-bottom: var(--space-4);
+}
+.hero-name-line {
+  opacity: 0;
+  display: block;
+}
+.hero-name-line--right {
+  align-self: flex-end;
+  text-align: right;
+}
+.hero-name-line--left {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.hero-sub {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-4);
+}
+
+.hero-role {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1vw + 0.9rem, 1.5rem);
+  color: var(--foreground);
+  opacity: 0;
+}
+
+.hero-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  opacity: 0;
+}
+.hero-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--fs-meta);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.hero-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hero-tagline {
+  font-size: var(--fs-body-lg);
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 46ch;
+  margin-bottom: var(--space-5);
+  opacity: 0;
+}
+
+.hero-links {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* Text links, not filled buttons — the reference leans on typography
+   and an underline reveal rather than button chrome. */
+.hero-link {
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-small);
+  color: var(--foreground);
+  padding-bottom: 3px;
+}
+.hero-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+.hero-link:hover::after,
+.hero-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 640px) {
+  .hero {
+    align-items: flex-start;
+    padding-top: calc(var(--space-5) + 56px);
+  }
+  .hero-sub {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
