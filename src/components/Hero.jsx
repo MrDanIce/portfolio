@@ -24,7 +24,7 @@ export function Hero() {
       return;
     }
 
-    anime
+    const timeline = anime
       .timeline({ easing: "easeOutExpo" })
       .add({ targets: ".hero-eyebrow", opacity: [0, 1], translateY: [14, 0], duration: 450 }, 60)
       .add(
@@ -43,7 +43,12 @@ export function Hero() {
         });
       });
     }, 2200);
-    return () => window.clearTimeout(fallback);
+    return () => {
+      // Stops the animejs rAF loop immediately on unmount instead of
+      // letting it tick (and touch DOM nodes) for up to ~2.2s after.
+      timeline.pause();
+      window.clearTimeout(fallback);
+    };
   }, [reducedMotion]);
 
   return (
