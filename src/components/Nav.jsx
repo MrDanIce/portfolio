@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { SECTIONS } from "../data/content";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -12,7 +13,8 @@ function scrollToId(id) {
  * sparse, and closer to the reference's menu treatment than a
  * conventional startup navbar.
  */
-export function Nav({ active, theme, onToggleTheme }) {
+export function Nav({ active, isHome, theme, onToggleTheme }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
   const toggleBtnRef = useRef(null);
@@ -31,8 +33,11 @@ export function Nav({ active, theme, onToggleTheme }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // On a project page the sections are not in the DOM, so navigate home
+  // with the section as the hash and let useScrollOnNavigate land on it.
   const go = (id) => {
-    scrollToId(id);
+    if (isHome) scrollToId(id);
+    else navigate(`/#${id}`);
     setOpen(false);
   };
 
@@ -43,10 +48,11 @@ export function Nav({ active, theme, onToggleTheme }) {
           type="button"
           className="nav-logo"
           onClick={() => {
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (isHome) window.scrollTo({ top: 0, behavior: "smooth" });
+            else navigate("/");
             setOpen(false);
           }}
-          aria-label="Scroll to top"
+          aria-label={isHome ? "Scroll to top" : "Back to home"}
         >
           MF.
         </button>

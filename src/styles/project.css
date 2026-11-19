@@ -1,0 +1,225 @@
+/* ══════════════════════════ PROJECT PAGE ══════════════════════════
+   /projects/:slug. Same editorial system as the home page: display face
+   for the title, the project's own accent for color, hairline borders. */
+
+/* Each project's accent is tuned for the dark espresso background; the
+   bright ones (yellow, cyan, mint) wash out on the light cream one. Text
+   drawn in a project accent uses --accent-text, which in light theme is
+   mixed toward the foreground color. Thin decorative lines keep the pure
+   accent. --project-accent is set inline per project. */
+.project-page,
+.project-row,
+.project-pager-link {
+  --accent-text: var(--project-accent);
+}
+:root[data-theme="light"] :is(.project-page, .project-row, .project-pager-link) {
+  --accent-text: color-mix(in srgb, var(--project-accent) 55%, var(--foreground));
+}
+
+.project-page {
+  /* Clear the fixed nav bar. */
+  padding-top: calc(var(--space-6) + var(--space-5));
+}
+
+.project-back {
+  display: inline-flex;
+  gap: var(--space-1);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: var(--space-5);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.project-back:hover,
+.project-back:focus-visible {
+  color: var(--accent);
+}
+
+.project-meta {
+  font-size: var(--fs-meta);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: var(--space-2);
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 1.5rem + 5vw, 6.5rem);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--accent-text);
+  margin-bottom: var(--space-2);
+}
+
+.project-sub {
+  font-size: var(--fs-body-lg);
+  color: var(--muted);
+  max-width: 60ch;
+  margin-bottom: var(--space-5);
+}
+
+.project-hero-visual {
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+}
+.project-hero-visual .project-visual-initial {
+  font-size: clamp(6rem, 22vw, 16rem);
+}
+
+.project-body {
+  display: grid;
+  grid-template-columns: minmax(180px, 22%) 1fr;
+  gap: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+.project-aside-label,
+.project-section-heading {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: var(--space-2);
+}
+.project-aside-label:not(:first-child) {
+  margin-top: var(--space-4);
+}
+
+.project-stack,
+.project-links {
+  list-style: none;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  line-height: 2;
+}
+.project-links a {
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border-strong);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.project-links a:hover,
+.project-links a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.project-content {
+  max-width: 72ch;
+}
+.project-content section + section {
+  margin-top: var(--space-5);
+}
+
+.project-overview {
+  font-size: var(--fs-body-lg);
+  color: var(--foreground);
+  line-height: var(--lh-body);
+  margin-bottom: var(--space-5);
+}
+
+.project-list-items {
+  list-style: none;
+}
+.project-list-items li {
+  position: relative;
+  padding: 6px 0 6px 20px;
+  color: var(--muted);
+  line-height: var(--lh-body);
+}
+.project-list-items li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05em;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* Previous / next project. */
+.project-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
+}
+.project-pager-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 48%;
+}
+.project-pager-link.is-next {
+  text-align: right;
+  margin-left: auto;
+}
+.project-pager-dir {
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.project-pager-name {
+  color: var(--accent-text);
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.project-pager-link:hover .project-pager-name,
+.project-pager-link:focus-visible .project-pager-name {
+  opacity: 0.75;
+}
+
+.project-missing {
+  min-height: 70svh;
+}
+
+/* "View project" link on the home page list. */
+.project-row-more {
+  display: inline-flex;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  font-size: var(--fs-meta);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.project-row-more:hover,
+.project-row-more:focus-visible {
+  color: var(--accent);
+}
+.project-row-name {
+  color: var(--accent-text);
+}
+.project-row-name a {
+  color: inherit;
+}
+
+@media (max-width: 780px) {
+  .project-body {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  .project-hero-visual {
+    aspect-ratio: 16 / 9;
+  }
+  .project-pager {
+    flex-direction: column;
+  }
+  .project-pager-link,
+  .project-pager-link.is-next {
+    max-width: none;
+    text-align: left;
+    margin-left: 0;
+  }
+}

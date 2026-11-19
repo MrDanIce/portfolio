@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { DATA } from "../data/content";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useReveal } from "../hooks/useReveal";
@@ -8,10 +9,12 @@ function ProjectRow({ project, index }) {
   const ref = useReveal({ reducedMotion, threshold: 0.15 });
 
   return (
-    <article ref={ref} className="project-row reveal">
-      <div className="project-row-visual">
+    <article ref={ref} className="project-row reveal" style={{ "--project-accent": project.accent }}>
+      {/* Duplicate of the title link for pointer users; hidden from the
+          keyboard and screen readers so each project is announced once. */}
+      <Link to={`/projects/${project.slug}`} className="project-row-visual" tabIndex={-1} aria-hidden="true">
         <ProjectVisual project={project} />
-      </div>
+      </Link>
 
       <div className="project-row-body">
         <div className="project-row-top">
@@ -21,8 +24,8 @@ function ProjectRow({ project, index }) {
           </span>
         </div>
 
-        <h3 className="project-row-name" style={{ color: project.accent }}>
-          {project.name}
+        <h3 className="project-row-name">
+          <Link to={`/projects/${project.slug}`}>{project.name}</Link>
         </h3>
         <p className="project-row-sub">{project.sub}</p>
 
@@ -37,6 +40,11 @@ function ProjectRow({ project, index }) {
             <span key={t}>{t}</span>
           ))}
         </div>
+
+        <Link to={`/projects/${project.slug}`} className="project-row-more" style={{ "--accent": project.accent }}>
+          View project <span aria-hidden="true">&rarr;</span>
+          <span className="visually-hidden">: {project.name}</span>
+        </Link>
       </div>
     </article>
   );
