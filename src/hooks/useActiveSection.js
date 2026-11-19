@@ -9,10 +9,13 @@ import { useEffect, useState } from "react";
  * layout (web fonts, entrance animations) and, once trusted alone,
  * has no way to self-correct back to "no section active" at the top.
  */
-export function useActiveSection(ids) {
+export function useActiveSection(ids, enabled = true) {
   const [active, setActive] = useState("");
 
   useEffect(() => {
+    // Re-run when the home view comes back so observers attach to its
+    // freshly mounted sections (they do not exist on a project page).
+    if (!enabled) return;
     const els = ids.map((id) => document.getElementById(id)).filter(Boolean);
     if (!els.length) return;
 
@@ -32,7 +35,7 @@ export function useActiveSection(ids) {
     els.forEach((el) => io.observe(el));
 
     return () => io.disconnect();
-  }, [ids]);
+  }, [ids, enabled]);
 
   return active;
 }

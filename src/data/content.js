@@ -34,7 +34,7 @@ export const DATA = {
       { n: "45K", l: "FDA Records Processed" },
     ],
     paragraph:
-      "Two years at DuPont engineering enterprise-grade data pipelines on Azure — consolidating three enterprise systems into a governed Databricks lakehouse, processing billions of records daily across 100+ data products, and keeping data flowing through an $11B corporate divestiture without interruption. Now at ASU completing an MS in Software Engineering: leading infrastructure for a sponsored capstone building a computer-vision pipeline for a construction-tech startup, shipping LLM-powered systems, and running a self-hosted Kubernetes homelab on the side. I care about data quality, system reliability, and software that actually ships.",
+      "Two years at DuPont engineering enterprise-grade data pipelines on Azure — consolidating three enterprise systems into a governed Databricks lakehouse, processing billions of records daily across 100+ data products, and keeping data flowing through an $11B corporate divestiture without interruption. Now at ASU completing an MS in Software Engineering: leading infrastructure and building the model-serving service for a sponsored capstone computer-vision pipeline, packaging reproducible scientific workloads for ASU's Sol supercomputer, shipping LLM-powered systems, and running a self-hosted Kubernetes homelab on the side. I care about data quality, system reliability, and software that actually ships.",
   },
 
   // Large editorial "positioning statement" — the words are honest
@@ -102,20 +102,88 @@ export const DATA = {
 
   projects: [
     {
+      slug: "mep-drawing-intelligence",
       name: "MEP Drawing Intelligence",
       sub: "Computer Vision Pipeline for Construction Drawings",
       year: "2026",
       category: "Computer Vision / Capstone",
       period: "Fall 2026",
-      stack: ["Python", "YOLO", "CVAT", "GitHub Actions", "Django", "React"],
+      stack: ["Python", "YOLO26", "FastAPI", "PostgreSQL", "CVAT", "GitHub Actions", "React"],
       accent: "#FF9F4D",
       bullets: [
         "Leading infrastructure and DevOps for a 5-person SER 517 capstone sponsored by Auto BIM Route, building a YOLO-based computer-vision pipeline to extract MEP symbols from construction drawings.",
+        "Built the model-serving microservice in FastAPI: it wraps the trained YOLO26 detector, runs tiled inference on 200-dpi drawing pages, and refuses to serve a model whose classes don't match the 235-symbol taxonomy.",
         "Set up the GitHub repo, branching strategy, and a GitHub Actions CI/CD pipeline running automated tests on every push and pull request.",
         "Secured GPU compute on ASU's Sol supercomputer for model training and led Sprint 0 requirements work, writing user stories and the initial product backlog.",
       ],
+      details: {
+        overview:
+          "The sponsor wants quantity takeoffs from MEP (mechanical, electrical, plumbing) drawings: a count of every light, outlet and panel symbol on a drawing PDF. The team labels symbols in CVAT, trains a YOLO26 detector on 1024-px tiles of pages rendered at 200 dpi, and serves it behind a web app.",
+        sections: [
+          {
+            heading: "Architecture",
+            items: [
+              "React frontend for uploading drawings and reviewing them page by page.",
+              "A FastAPI CRUD service that owns uploads, renders each PDF page at 200 dpi, tracks job state and stores everything in PostgreSQL.",
+              "A separate, stateless model service that loads the trained weights once and returns detections for one page image per request.",
+            ],
+          },
+          {
+            heading: "My part: the model service",
+            items: [
+              "Two endpoints from the team's OpenAPI contract: POST /internal/detect (page image in, symbol boxes out) and GET /internal/health (model version, device, class count and a class-list checksum).",
+              "Reuses the team's existing tiling and cross-tile NMS code instead of reimplementing it, so serving and evaluation cannot drift apart.",
+              "Fails loudly: if the weights are missing or were trained on a different taxonomy, health returns 503 instead of serving wrong answers, and the checksum lets both services confirm they share one class list.",
+              "Clips every box to the page and maps 0-based model indices to the taxonomy's 1-based class IDs.",
+              "Processes a full 8400 × 6000 px drawing in about 10 seconds on an Apple-silicon GPU.",
+              "Tested with a fake model and a stub predictor, so CI runs the whole suite with no GPU, PyTorch or weights.",
+            ],
+          },
+        ],
+      },
     },
     {
+      slug: "hpc-scientific-packaging",
+      name: "HPC Scientific Packaging",
+      sub: "Reproducible RDKit Workload on Slurm, Apptainer & Lmod",
+      year: "2026",
+      category: "HPC / DevOps",
+      period: "Nov 2026",
+      stack: ["Slurm", "Apptainer", "conda", "Lmod", "GitHub Actions", "Python", "RDKit"],
+      accent: "#F2C14E",
+      bullets: [
+        "Packaged a cheminformatics workload (12 RDKit molecular descriptors over the ChEMBL 37 database) so it runs identically everywhere: a checksum-pinned conda environment, an Apptainer container, Slurm batch and array jobs, and an Lmod module.",
+        "Ran the full 2,897,819-molecule dataset on ASU's Sol supercomputer as an 8-task Slurm job array plus a dependency-gated merge job, sizing CPU, memory and time requests from measured test runs.",
+        "Showed byte-identical output (SHA-256) across an aarch64 VM, x86_64 GitHub Actions CI and Sol.",
+      ],
+      details: {
+        overview:
+          "One scientific workload, packaged the way an HPC center would ship it: computing 12 molecular descriptors (molecular weight, logP, TPSA, QED, ring counts and more) for every compound in the public ChEMBL 37 release. Developed on a single-node Slurm test VM, built and smoke-tested in GitHub Actions, then run at full scale on ASU's Sol supercomputer.",
+        sections: [
+          {
+            heading: "What's in it",
+            items: [
+              "A conda environment with lock files for x86_64 and aarch64, every package pinned by file and checksum.",
+              "An Apptainer container built from those lock files, with the unit tests running inside the image at build time.",
+              "Slurm single-job, job-array and merge scripts; the merge only runs if every array task succeeds.",
+              "An Lmod module that puts the containerized tool on the path, plus a GitHub Actions workflow that builds the x86_64 image and smoke-tests it.",
+            ],
+          },
+          {
+            heading: "Results",
+            items: [
+              "Full ChEMBL 37 on Sol: 2,897,819 molecules in about 1 hour as 8 array tasks (2 at a time, the account's limit) plus a 20-second merge; 15 molecules RDKit could not parse were recorded, not fatal.",
+              "200,000-molecule subset on the 4-CPU test VM: the job array finished in 99 s versus 320 s as a single job, about 3.2× faster, with byte-identical output.",
+              "Failure test: when one array task failed, Slurm cancelled the merge job instead of producing a partial result.",
+              "Every number in the repository is a real measurement labeled with the machine it came from, and real errors are logged with causes and fixes in a troubleshooting guide.",
+            ],
+          },
+        ],
+        links: [{ label: "GitHub repository", href: "https://github.com/MrDanIce/hpc-scientific-packaging" }],
+      },
+    },
+    {
+      slug: "focusflow",
       name: "FocusFlow",
       sub: "LLM-Powered Agentic Nudging System",
       year: "2026",
@@ -130,6 +198,7 @@ export const DATA = {
       ],
     },
     {
+      slug: "homelab-observability",
       name: "Homelab Observability Platform",
       sub: '"solomon" — Self-Hosted Infrastructure & Monitoring Stack',
       year: "2026",
@@ -144,6 +213,7 @@ export const DATA = {
       ],
     },
     {
+      slug: "self-hosted-llm-platform",
       name: "Self-Hosted LLM Platform",
       sub: "Private, ChatGPT-Style Local AI Platform",
       year: "2025–26",
@@ -158,6 +228,7 @@ export const DATA = {
       ],
     },
     {
+      slug: "fda-recall-classifier",
       name: "FDA Recall Classifier",
       sub: "ML Severity Classification Pipeline",
       year: "2026",
@@ -172,6 +243,7 @@ export const DATA = {
       ],
     },
     {
+      slug: "sign-language-translator",
       name: "Sign Language Translator",
       sub: "Real-Time ASL Recognition with CNNs",
       year: "2022",
@@ -202,6 +274,7 @@ export const DATA = {
       "TensorFlow",
       "Keras",
       "OpenCV",
+      "RDKit",
     ],
     "Data & Cloud": [
       "Azure Data Factory",
@@ -222,6 +295,10 @@ export const DATA = {
       "pytest",
       "Docker",
       "Kubernetes (k3s)",
+      "Slurm",
+      "Apptainer",
+      "Lmod",
+      "conda",
       "Tailscale",
       "Prometheus",
       "Grafana",
@@ -241,6 +318,10 @@ export const DATA = {
     ],
   },
 };
+
+export function findProject(slug) {
+  return DATA.projects.find((p) => p.slug === slug);
+}
 
 export const SECTIONS = [
   { id: "about", label: "About" },
